@@ -1,8 +1,29 @@
 import time
 import requests
 import base64
+import random
 from datetime import datetime, timezone
 from typing import Callable, Optional # seconds
+
+# === CODING WORDS FOR RANDOM CONTENT ===
+CODING_WORDS = [
+    "algorithm", "array", "boolean", "class", "compiler", "debugger", "function",
+    "variable", "string", "integer", "object", "method", "parameter", "return",
+    "loop", "condition", "statement", "expression", "operator", "syntax", "semantic",
+    "recursion", "iteration", "inheritance", "polymorphism", "encapsulation", "abstraction",
+    "interface", "implementation", "constructor", "destructor", "pointer", "reference",
+    "memory", "allocation", "deallocation", "garbage", "collection", "optimization",
+    "performance", "efficiency", "complexity", "asymptotic", "big", "notation",
+    "data", "structure", "stack", "queue", "tree", "graph", "hash", "table",
+    "binary", "search", "sorting", "bubble", "merge", "quick", "heap", "radix",
+    "database", "query", "sql", "schema", "table", "index", "transaction", "commit",
+    "rollback", "concurrency", "threading", "synchronization", "mutex", "semaphore",
+    "deadlock", "race", "condition", "parallel", "distributed", "microservice",
+    "api", "rest", "json", "xml", "http", "https", "endpoint", "request", "response",
+    "authentication", "authorization", "encryption", "decryption", "security", "vulnerability",
+    "testing", "unit", "integration", "regression", "coverage", "mock", "stub", "fixture",
+    "deployment", "ci", "cd", "pipeline", "docker", "kubernetes", "container", "orchestration"
+]
 
 # === HEADERS ===
 class AutoPRBot:
@@ -18,6 +39,115 @@ class AutoPRBot:
             "User-Agent": "auto-pr-bot"
         }
         self.log = logger if logger else print
+
+    def generate_random_content(self) -> dict:
+        """Generate random PR content using coding words"""
+        selected_words = random.sample(CODING_WORDS, min(50, len(CODING_WORDS)))
+        
+        # Generate title
+        title_words = random.sample(selected_words, 3)
+        title = f"feat: implement {title_words[0]} {title_words[1]} {title_words[2]} optimization"
+        
+        # Generate body content
+        what_changed = f"""
+## What Changed
+- Enhanced {random.choice(selected_words)} {random.choice(selected_words)} processing
+- Improved {random.choice(selected_words)} {random.choice(selected_words)} performance
+- Added {random.choice(selected_words)} {random.choice(selected_words)} validation
+- Refactored {random.choice(selected_words)} {random.choice(selected_words)} logic
+- Updated {random.choice(selected_words)} {random.choice(selected_words)} configuration
+"""
+        
+        tech_details = f"""
+## Technical Details
+This PR introduces significant improvements to the {random.choice(selected_words)} {random.choice(selected_words)} system:
+
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Implemented advanced {random.choice(selected_words)} {random.choice(selected_words)} algorithms
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Enhanced {random.choice(selected_words)} {random.choice(selected_words)} processing capabilities  
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Optimized {random.choice(selected_words)} {random.choice(selected_words)} performance metrics
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Added robust {random.choice(selected_words)} {random.choice(selected_words)} error handling
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Improved {random.choice(selected_words)} {random.choice(selected_words)} security protocols
+
+The implementation leverages modern {random.choice(selected_words)} {random.choice(selected_words)} patterns and follows best practices for {random.choice(selected_words)} {random.choice(selected_words)} development.
+"""
+        
+        performance = f"""
+## Performance Improvements
+- Reduced {random.choice(selected_words)} {random.choice(selected_words)} latency by 40%
+- Optimized {random.choice(selected_words)} {random.choice(selected_words)} memory usage
+- Enhanced {random.choice(selected_words)} {random.choice(selected_words)} throughput
+- Improved {random.choice(selected_words)} {random.choice(selected_words)} scalability
+- Streamlined {random.choice(selected_words)} {random.choice(selected_words)} operations
+"""
+        
+        testing = f"""
+## Testing
+- Added comprehensive {random.choice(selected_words)} {random.choice(selected_words)} unit tests
+- Implemented {random.choice(selected_words)} {random.choice(selected_words)} integration tests
+- Enhanced {random.choice(selected_words)} {random.choice(selected_words)} regression testing
+- Improved {random.choice(selected_words)} {random.choice(selected_words)} test coverage
+- Added {random.choice(selected_words)} {random.choice(selected_words)} performance benchmarks
+"""
+        
+        code_quality = f"""
+## Code Quality
+- Applied {random.choice(selected_words)} {random.choice(selected_words)} design patterns
+- Implemented {random.choice(selected_words)} {random.choice(selected_words)} best practices
+- Enhanced {random.choice(selected_words)} {random.choice(selected_words)} documentation
+- Improved {random.choice(selected_words)} {random.choice(selected_words)} maintainability
+- Added {random.choice(selected_words)} {random.choice(selected_words)} type safety
+"""
+        
+        footer_words = random.sample(selected_words, 10)
+        footer = f"""
+---
+**Generated**: {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")}
+"""
+        
+        body = what_changed + tech_details + performance + testing + code_quality + footer
+        
+        return {
+            "title": title,
+            "body": body,
+            "words_used": len(selected_words),
+            "all_words": selected_words
+        }
+
+    def generate_random_readme_content(self) -> str:
+        """Generate random README content using coding words"""
+        selected_words = random.sample(CODING_WORDS, min(30, len(CODING_WORDS)))
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
+        
+        content = f"""# Auto-Generated README
+
+This file was auto-updated on {timestamp}.
+
+## Project Overview
+This repository demonstrates automated {random.choice(selected_words)} {random.choice(selected_words)} workflows using advanced {random.choice(selected_words)} {random.choice(selected_words)} techniques.
+
+## Features
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Implements robust {random.choice(selected_words)} {random.choice(selected_words)} processing
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Enhanced {random.choice(selected_words)} {random.choice(selected_words)} performance optimization
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Advanced {random.choice(selected_words)} {random.choice(selected_words)} error handling
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Secure {random.choice(selected_words)} {random.choice(selected_words)} authentication
+- **{random.choice(selected_words).title()} {random.choice(selected_words).title()}**: Efficient {random.choice(selected_words)} {random.choice(selected_words)} data structures
+
+## Technical Implementation
+The system utilizes modern {random.choice(selected_words)} {random.choice(selected_words)} patterns and follows industry best practices for {random.choice(selected_words)} {random.choice(selected_words)} development.
+
+## Performance Metrics
+- Optimized {random.choice(selected_words)} {random.choice(selected_words)} algorithms
+- Enhanced {random.choice(selected_words)} {random.choice(selected_words)} memory management
+- Improved {random.choice(selected_words)} {random.choice(selected_words)} scalability
+- Streamlined {random.choice(selected_words)} {random.choice(selected_words)} operations
+
+## Random Coding Terms
+{', '.join(random.sample(selected_words, 15))}
+
+---
+*This content was generated using 100 random coding-related words*
+"""
+        return content
 
     def branches_have_diffs(self) -> bool:
         url = f"https://api.github.com/repos/{self.repo}/compare/{self.base_branch}...{self.head_branch}"
@@ -56,14 +186,8 @@ class AutoPRBot:
 
     def update_readme_on_branch(self, branch: str) -> bool:
         path = "README.md"
-        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
-        # Overwrite content entirely with new info
-        new_content = (
-            "# README\n\n"
-            f"This file was auto-updated on {timestamp}.\n"
-            "\n"
-            "Changes were made by Auto PR Bot to demonstrate automated updates, PR creation, and merging.\n"
-        )
+        # Generate random content using coding words
+        new_content = self.generate_random_readme_content()
         get_url = f"https://api.github.com/repos/{self.repo}/contents/{path}?ref={branch}"
         r = requests.get(get_url, headers=self.headers)
         existing_content_decoded = ""
@@ -103,16 +227,11 @@ class AutoPRBot:
     def create_pull_request(self) -> Optional[int]:
         url = f"https://api.github.com/repos/{self.repo}/pulls"
         
-        # Build PR body with co-authors
-        pr_body = "Automated PR generated by bot."
-        if self.co_authors:
-            co_author_lines = []
-            for co_author in self.co_authors:
-                co_author_lines.append(f"Co-authored-by: {co_author['name']} <{co_author['email']}>")
-            pr_body += "\n\n" + "\n".join(co_author_lines)
+        # Generate random PR content
+        random_content = self.generate_random_content()
         
         data = {
-            "title": f"Auto PR: Merge {self.head_branch} → {self.base_branch}",
+            "title": random_content["title"],
             "head": self.head_branch,
             "base": self.base_branch,
             "body": pr_body
@@ -172,6 +291,24 @@ class AutoPRBot:
                 if new_pr:
                     self.merge_pull_request(new_pr)
 
+    def display_random_content(self) -> None:
+        """Display generated random content for preview"""
+        self.log("\n" + "="*80)
+        self.log("RANDOM PR CONTENT GENERATED")
+        self.log("="*80)
+        
+        random_content = self.generate_random_content()
+        self.log(f"\nTitle: {random_content['title']}")
+        self.log(f"\nBody:\n{random_content['body']}")
+        self.log(f"\nWords Used: {random_content['words_used']}")
+        self.log(f"\nAll Words: {', '.join(random_content['all_words'])}")
+        
+        self.log("\n" + "="*80)
+        self.log("RANDOM README CONTENT GENERATED")
+        self.log("="*80)
+        readme_content = self.generate_random_readme_content()
+        self.log(f"\n{readme_content}")
+
     def run_loop(self, interval_seconds: int) -> None:
         while True:
             try:
@@ -200,4 +337,9 @@ if __name__ == "__main__":
         head_branch=HEAD_BRANCH,
         co_authors=co_authors
     )
-    bot.run_once()
+    
+    # Display random content generation
+    bot.display_random_content()
+    
+    # Uncomment the line below to run the actual bot
+    # bot.run_once()
