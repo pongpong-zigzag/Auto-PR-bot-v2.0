@@ -234,7 +234,7 @@ The system utilizes modern {random.choice(selected_words)} {random.choice(select
             "title": random_content["title"],
             "head": self.head_branch,
             "base": self.base_branch,
-            "body": pr_body
+            # "body": pr_body
         }
         response = requests.post(url, headers=self.headers, json=data)
         if response.status_code == 422:
