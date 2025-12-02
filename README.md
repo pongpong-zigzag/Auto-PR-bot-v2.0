@@ -1,66 +1,76 @@
 # Auto PR Bot
 
-Automates a simple GitHub workflow:
-- Ensure head branch exists (default `dev`)
-- Overwrite `README.md` on head branch
-- Create PR from head → base (default `dev` → `main`)
-- Auto-merge the PR
+Freshly structured toolkit for automating a lightweight GitHub workflow:
+
+- Keep a head branch (default `dev`) alive by cloning it from the base branch when missing
+- Overwrite `README.md` on that branch with auto-generated content
+- Create and (optionally) merge a PR from head → base, once diffs exist
+
+## Project Layout
+
+```
+autopr_bot/
+  ├─ bot.py            # GitHub automation logic
+  ├─ content.py        # Random content generators
+  └─ ui/               # Tkinter desktop experience
+main.py                # Backwards-compatible script entry
+ui.py                  # Thin launcher for the redesigned UI
+```
 
 ## Requirements
-- Python 3.8+
-- GitHub Personal Access Token (classic) with `repo` scope
-- `requests` library (`pip install requests`)
 
-## Quick Start (UI)
+- Python 3.9+
+- `requests` (install via `pip install -r requirements.txt` or `pip install requests`)
+- GitHub Personal Access Token (classic) with `repo` scope
+
+## Launch the UI
+
 ```bash
 python ui.py
 ```
-Fill in:
-- Token: your GitHub PAT
-- Username/Owner: e.g., `octocat`
-- Repository: e.g., `hello-world`
-- Base Branch: e.g., `main`
-- Head Branch: e.g., `dev`
-- Uptime (seconds): loop interval
 
-Buttons:
-- Run Once: single cycle (ensure branch → overwrite README → PR → merge)
-- Start Loop: run every N seconds
-- Stop Loop: stop background loop
+Highlights:
+- Modern dark theme with status badges and live log stream
+- Optional co-author section; enable it only when you want `Co-authored-by` lines
+- Loop controls with interval spinbox and live indicators
+- Preview generator to inspect the random PR/README copy before running anything
 
 ## Programmatic Usage
+
 ```python
-from main import AutoPRBot
+from autopr_bot import AutoPRBot
 
 bot = AutoPRBot(
     token="<YOUR_TOKEN>",
     repo="owner/repo",
     base_branch="main",
     head_branch="dev",
+    # co_authors=[{"name": "Ada Lovelace", "email": "ada@example.com"}],
 )
 
-# Single cycle
-bot.run_once()
-
-# Continuous loop every 60 seconds
-# bot.run_loop(60)
+bot.run_once()   # Single cycle
+# bot.run_loop(120)  # Continuous automation
 ```
 
-## How It Works
-1. If the head branch does not exist, it is created from the base branch
-2. `README.md` on the head branch is overwritten using the Contents API
-3. If there are diffs, a PR from head → base is created
-4. The PR is merged automatically
+## Automation Flow
 
-## Notes & Troubleshooting
-- If you see "Validation Failed: No commits between", there were no diffs to PR.
-- 404 errors usually indicate wrong `owner/repo`, branch names, or insufficient token permissions.
-- Merge may fail if branch protection rules block auto-merge.
-- API rate limits: increase the loop interval.
+1. Ensure the head branch exists (creates it from base if missing).
+2. Overwrite `README.md` on the head branch with new random content.
+3. If commits exist, open a PR from head → base.
+4. Merge the PR automatically if creation succeeds.
 
-## Security
-- Use least-privilege tokens. For private repos, `repo` scope is required.
-- Avoid hardcoding tokens; the UI uses in-memory token entry.
+## Troubleshooting
+
+- **Validation Failed: No commits between** – nothing changed; either wait or tweak content.
+- **404s / 403s** – usually incorrect `owner/repo`, branch names, or token permissions.
+- **Merge blocked** – branch protection rules may prevent auto-merges.
+- **Rate limits** – widen the loop interval or use fewer API calls.
+
+## Security Notes
+
+- Prefer environment variables or secret managers for tokens; never commit them.
+- Limit PAT scopes to `repo`, or less if possible.
 
 ## License
+
 MIT
